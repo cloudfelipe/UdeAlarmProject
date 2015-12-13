@@ -9,8 +9,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="udea.edu.co.udealarm.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/progressbarcustomstyle1"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Indicador de dB"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_above="@id/progress_bar"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="40dB"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/colorAccent"
+        android:layout_below="@id/progress_bar"
+        android:id="@+id/decibelsLB"
+        />
 </RelativeLayout>
