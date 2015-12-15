@@ -38,4 +38,37 @@
         android:layout_below="@id/progress_bar"
         android:id="@+id/decibelsLB"
         />
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/decibelsLB"
+        android:text="Up"
+        android:id="@+id/upButton"
+        android:onClick="upBtnAction"
+        android:visibility="invisible"
+        />
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/upButton"
+        android:layout_toEndOf="@id/upButton"
+        android:layout_below="@id/decibelsLB"
+        android:text="Down"
+        android:id="@+id/downButton"
+        android:onClick="downBtnAction"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/downButton"
+        android:layout_toEndOf="@id/downButton"
+        android:layout_below="@id/decibelsLB"
+        android:text="Save Cal"
+        android:id="@+id/saveCal"
+        android:onClick="saveCalBtnAction"
+        android:visibility="invisible"
+        />
+
 </RelativeLayout>
