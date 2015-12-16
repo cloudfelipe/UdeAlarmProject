@@ -1,6 +1,7 @@
 package udea.edu.co.udealarm;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -65,21 +66,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        super.onPause();
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        stopAlarm();
-        this.finish();
-        super.onPause();
-        super.onDestroy();
+        //stopAlarm();
+        //this.finish();
+
+        //super.onDestroy();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        stopAlarm();
-        this.finish();
-        super.onDestroy();
+        //stopAlarm();
+        //this.finish();
+        //super.onDestroy();
     }
 
     /********** Implementation ********/
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(
                             mContext,
                             "Error " + msg.obj, Toast.LENGTH_LONG).show();
-                    stopAlarm();
+                    //stopAlarm();
                     break;
                 default :
                     super.handleMessage(msg);
@@ -231,6 +233,9 @@ public class MainActivity extends AppCompatActivity {
      * Mostrar acerca de
      */
     public void about(){
+
+        Intent i = new Intent(MainActivity.this, AppPreferences.class);
+        startActivity(i);
 
     }
 }
