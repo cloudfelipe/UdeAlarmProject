@@ -189,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
                 if (mCalib){
                     showMessage("Calibración no guardada.");
                     mEngine.stop_engine();
+                    decibelsTx.setText("0dB");
+                    modeTx.setText("");
                 }else if (mRunning){
                     showMessage("Finalice el monitoreo para realizar la calibración");
                     break;
@@ -253,11 +255,15 @@ public class MainActivity extends AppCompatActivity {
      */
     public void stopAlarm(){
 
-        modeTx.setText("");
 
-        mEngine.stop_engine();
 
-        mRunning = false;
+        if (mRunning){
+            mEngine.stop_engine();
+            mRunning = false;
+            modeTx.setText("");
+            decibelsTx.setText("0dB");
+        }
+
 
         //Close app
         /*
@@ -279,6 +285,9 @@ public class MainActivity extends AppCompatActivity {
             downCalBtn.setVisibility(View.INVISIBLE);
             saveCalBtn.setVisibility(View.INVISIBLE);
             mCalib = false;
+
+            decibelsTx.setText("0dB");
+            modeTx.setText("");
 
         }else{
 
@@ -315,8 +324,6 @@ public class MainActivity extends AppCompatActivity {
         mEngine.storeCalibvalue();
 
         mEngine.stop_engine();
-
-        modeTx.setText("");
 
         showMessage("Calibración guardada.");
 
