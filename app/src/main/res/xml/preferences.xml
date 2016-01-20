@@ -2,10 +2,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference android:title="Nivel máximo ruido"
         android:key="threshold"
-        android:summary="Nivel máximo para activar la alerta"></EditTextPreference>
+        android:summary="Nivel máximo para activar la alerta"
+        android:defaultValue="60" ></EditTextPreference>
     <EditTextPreference android:title="Número de incidencias"
         android:key="hitsMax"
-        android:summary="Nivel máximo de incidencias"></EditTextPreference>
+        android:summary="Nivel máximo de incidencias"
+        android:defaultValue="10" ></EditTextPreference>
     <!--<CheckBoxPreference android:title="Application Updates"
         android:defaultValue="false"
         android:summary="This option if selected will allow the application to check for latest versions."

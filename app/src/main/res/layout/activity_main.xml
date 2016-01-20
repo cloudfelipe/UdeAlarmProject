@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -11,112 +10,146 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="udea.edu.co.udealarm.MainActivity">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+    <LinearLayout
+        android:id="@+id/lytHeader"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:progressDrawable="@drawable/progressbarcustomstyle1"
-        />
+        android:layout_height="120dp"
+        android:weightSum="1">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Indicador de dB"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:id="@+id/indicatorLB"
-        android:textStyle="bold"
-        android:layout_above="@id/progress_bar"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/logo_udea" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:gravity="center"
-        android:layout_above="@id/indicatorLB"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
-        android:id="@+id/modeTx"
-        android:textStyle="bold"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            style="@style/HugeText"
+            android:text="@string/header_txt"
+            android:id="@+id/textView2"
+            />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="0dB"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textColor="@color/colorAccent"
-        android:layout_below="@id/progress_bar"
-        android:id="@+id/decibelsLB"
-        />
+    </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:id="@+id/lytIndicators"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="15sp"
-        android:layout_below="@id/decibelsLB"
-        android:id="@+id/buttonsCal">
+        android:layout_below="@id/lytHeader"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
 
-        <info.hoang8f.widget.FButton
-            android:layout_width="130dp"
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="+ balance"
-            android:id="@+id/upButton"
-            android:onClick="upBtnAction"
-            android:visibility="invisible"
+            android:scaleY="4"
+            android:progress="0" />
 
-            fbutton:shadowEnabled="true"
-            fbutton:shadowHeight="5dp"
-            fbutton:cornerRadius="5dp"
-            android:layout_marginRight="20dp"
-            fbutton:buttonColor="#2ecc71"
-            fbutton:shadowColor="#27ae60"
-            android:textColor="#ecf0f1"
-
-            />
-
-        <info.hoang8f.widget.FButton
-            android:layout_width="130dp"
+        <TextView
+            android:id="@+id/txtLevel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/upButton"
-            android:layout_toEndOf="@id/upButton"
-            android:text="- balance"
-            android:id="@+id/downButton"
-            android:onClick="downBtnAction"
-            android:visibility="invisible"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Nivel de Ruido"
+            android:layout_below="@+id/progress_bar"/>
 
-            fbutton:shadowEnabled="true"
-            fbutton:shadowHeight="5dp"
-            fbutton:cornerRadius="5dp"
-            fbutton:buttonColor="#2ecc71"
-            fbutton:shadowColor="#27ae60"
-            android:textColor="#ecf0f1"
-            />
+        <TextView
+            android:id="@+id/txtBreakCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Avisos"
+            android:layout_below="@id/txtLevel"/>
 
 
     </RelativeLayout>
 
-    <info.hoang8f.widget.FButton
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="5dp"
-        fbutton:cornerRadius="5dp"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/buttonsCal"
-        android:text="Guardar"
-        android:textColor="#ecf0f1"
-        android:id="@+id/saveCal"
-        android:onClick="saveCalBtnAction"
-        android:visibility="invisible"
-        fbutton:buttonColor="#3498db"
-        fbutton:shadowColor="#2980b9"
 
-        android:layout_marginTop="15dp" />
+
+    <LinearLayout
+        android:id="@+id/calibrationLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:paddingTop="20dp"
+        android:layout_below="@id/lytIndicators">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/threshold"
+            android:id="@+id/txt_calibration"
+            android:gravity="center"
+            android:textAlignment="center"
+            />
+
+        <LinearLayout
+            android:id="@+id/lytCalibrationButtons"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="@string/less_tolerance"
+                android:id="@+id/btnLessTolerance"
+                android:onClick="lessTolerance"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="@string/more_tolerance"
+                android:id="@+id/btnMoreTolerance"
+                android:onClick="moreTolerance" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnEndTolerance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_end_tolerance"
+            android:onClick="endCalibrateOptions" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lytButtons"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/txtAlertStatus"
+            style="@style/TextAlertStatus"
+            android:text="@string/alerting_status_off"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_txt_start" />
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_txt_stop"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

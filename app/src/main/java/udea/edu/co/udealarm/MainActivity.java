@@ -3,6 +3,8 @@ package udea.edu.co.udealarm;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -26,9 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private Button upCalBtn;
     private Button downCalBtn;
     private Button saveCalBtn;
-    private TextView modeTx;
+    private Button startBtn;
+    private Button stopBtn;
+    private TextView txtAlertStatus;
     /**************************/
-
+    MediaPlayer mp;
     /* constants */
     private static final String LOG_TAG = "UdeAlarm";
 
@@ -57,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
     static int PREFERENCES_GROUP_ID = 0;
     static final int CALIBRATE_OPTION = 3;
     static final int ABOUT_OPTION = 4;
-    static final int STOP_OPTION = 2;
-    static final int START_OPTION = 1;
 
     /***************************/
 
@@ -66,16 +68,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        findViewById(R.id.calibrationLayout).setVisibility(View.INVISIBLE);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        mp = MediaPlayer.create(this, R.raw.alarm);
 
-        decibelsTx = (TextView)findViewById(R.id.decibelsLB);
+        decibelsTx = (TextView)findViewById(R.id.txtLevel);
         barDB = (ProgressBar)findViewById(R.id.progress_bar);
 
-        upCalBtn = (Button)findViewById(R.id.upButton);
-        downCalBtn = (Button)findViewById(R.id.downButton);
-        saveCalBtn = (Button)findViewById(R.id.saveCal);
-        modeTx = (TextView)findViewById(R.id.modeTx);
+        upCalBtn = (Button)findViewById(R.id.btnMoreTolerance);
+        downCalBtn = (Button)findViewById(R.id.btnLessTolerance);
+        saveCalBtn = (Button)findViewById(R.id.btnEndTolerance);
+
+        txtAlertStatus = (TextView) findViewById(R.id.txtAlertStatus);
+
+        startBtn=(Button)findViewById(R.id.btnStart);
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAlarm();
+            }
+        });
+
+        stopBtn=(Button)findViewById(R.id.btnStop);
+        stopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopAlarm();
+            }
+        });
     }
 
     @Override
@@ -90,11 +110,6 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        //stopAlarm();
-
-        //this.finish();
-
-        //super.onDestroy();
     }
 
     @Override
@@ -102,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         stopAlarm();
-        //this.finish();
-        //super.onDestroy();
     }
 
     /********** Implementation ********/
@@ -128,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                         if (mHitCount > mHitMax){
                             //Intentos superados
                             showMessage("Limite de ruido superado reiteradamente");
+                            mp.start();
                             stopAlarm();
                         }
                     }
@@ -140,14 +154,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case MAXOVER_MSG :
                     mMax = false;
-                    //handle_mode_display();
-                    //mSplMaxButton.setTextColor(Color.parseColor("#6D7B8D"));
                     break;
                 case ERROR_MSG:
                     Toast.makeText(
                             mContext,
                             "Error " + msg.obj, Toast.LENGTH_LONG).show();
-                    //stopAlarm();
                     break;
                 default :
                     super.handleMessage(msg);
@@ -165,11 +176,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         super.onCreateOptionsMenu(menu);
-
-        menu.add(PREFERENCES_GROUP_ID, START_OPTION, 0, "Iniciar").setIcon(
-                android.R.drawable.ic_dialog_email);
-        menu.add(PREFERENCES_GROUP_ID, STOP_OPTION, 0, "Parar").setIcon(
-                android.R.drawable.ic_menu_close_clear_cancel);
         menu.add(PREFERENCES_GROUP_ID, CALIBRATE_OPTION, 0, "Calibración").setIcon(
                 android.R.drawable.ic_menu_revert);
         menu.add(PREFERENCES_GROUP_ID, ABOUT_OPTION, 0, "Opciones").setIcon(
@@ -190,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                     showMessage("Calibración no guardada.");
                     mEngine.stop_engine();
                     decibelsTx.setText("0dB");
-                    modeTx.setText("");
+                    findViewById(R.id.lytButtons).setVisibility(View.VISIBLE);
                 }else if (mRunning){
                     showMessage("Finalice el monitoreo para realizar la calibración");
                     break;
@@ -207,22 +213,6 @@ public class MainActivity extends AppCompatActivity {
 
                 about();
                 break;
-            case STOP_OPTION :
-                if (mCalib) break;
-                stopAlarm();
-                break;
-            case START_OPTION :
-
-                if (mCalib){
-                    showMessage("Por favor termine la calibración antes de iniciar.");
-                }else if (mRunning){
-
-                    showMessage("El monitoreo está en ejecución");
-                }else {
-                    startAlarm();
-                }
-
-
         }
         return true;
     }
@@ -234,10 +224,8 @@ public class MainActivity extends AppCompatActivity {
     public void startAlarm(){
 
         //mCalib = false;
-
-        modeTx.setText("MONITOREO - ACTIVA");
-        modeTx.setTextColor(getResources().getColor(R.color.colorGreen));
-
+        txtAlertStatus.setText(R.string.alerting_status_on);
+        txtAlertStatus.setTextColor(Color.GREEN);
         mMax = false;
         mLog = false;
         mMode = false;
@@ -260,19 +248,11 @@ public class MainActivity extends AppCompatActivity {
         if (mRunning){
             mEngine.stop_engine();
             mRunning = false;
-            modeTx.setText("");
+            txtAlertStatus.setText(R.string.alerting_status_off);
+            txtAlertStatus.setTextColor(Color.GRAY);
             decibelsTx.setText("0dB");
         }
 
-
-        //Close app
-        /*
-        super.onDestroy();
-        this.finish();
-        getWindow().clearFlags(
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        */
     }
 
     /**
@@ -281,45 +261,37 @@ public class MainActivity extends AppCompatActivity {
     public void calibrateAction(){
 
         if (mCalib){
-            upCalBtn.setVisibility(View.INVISIBLE);
-            downCalBtn.setVisibility(View.INVISIBLE);
-            saveCalBtn.setVisibility(View.INVISIBLE);
+            findViewById(R.id.calibrationLayout).setVisibility(View.INVISIBLE);
             mCalib = false;
-
+            findViewById(R.id.lytButtons).setVisibility(View.VISIBLE);
             decibelsTx.setText("0dB");
-            modeTx.setText("");
 
         }else{
 
             mEngine = new SoundMeterEngine(mhandle, mContext);
             mEngine.start_engine();
-
-            modeTx.setText("CALIBRACIÓN - ACTIVA");
-            modeTx.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-
             showMessage("Está en modo calibración\nAjuste los parámetros y guarde los cambios " +
                     "pulsando el botón GUARDAR para continuar");
 
-            upCalBtn.setVisibility(View.VISIBLE);
-            downCalBtn.setVisibility(View.VISIBLE);
-            saveCalBtn.setVisibility(View.VISIBLE);
+            findViewById(R.id.calibrationLayout).setVisibility(View.VISIBLE);
+            findViewById(R.id.lytButtons).setVisibility(View.INVISIBLE);
             mCalib = true;
 
 
         }
-
     }
 
-    public void upBtnAction(View view){
 
+    public void moreTolerance(View view){
         mEngine.calibUp();
     }
 
-    public void downBtnAction(View view){
+    public void lessTolerance(View view){
+
         mEngine.calibDown();
     }
 
-    public void saveCalBtnAction(View view){
+    public void endCalibrateOptions(View view){
 
         mEngine.storeCalibvalue();
 
@@ -347,8 +319,8 @@ public class MainActivity extends AppCompatActivity {
     private void readApplicationPreferences() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        mHitMax = Integer.parseInt(prefs.getString("hitsMax", null));
-        mThreshold = Integer.parseInt(prefs.getString("threshold", null));
+        mHitMax = Integer.parseInt(prefs.getString("hitsMax","60"));
+        mThreshold = Integer.parseInt(prefs.getString("threshold","10"));
 
         Log.i(LOG_TAG, "hitMax=" + mHitMax);
         Log.i(LOG_TAG, "threshold=" + mThreshold);
