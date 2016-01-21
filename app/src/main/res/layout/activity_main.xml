@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -14,8 +15,8 @@
         android:id="@+id/lytHeader"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:weightSum="1">
+        android:layout_height="0dp"
+        android:layout_weight="0.8">
 
         <ImageView
             android:layout_width="0dp"
@@ -38,64 +39,61 @@
     <RelativeLayout
         android:id="@+id/lytIndicators"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_below="@id/lytHeader"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:layout_weight="0.7"
+        android:layout_marginTop="3dp">
 
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleY="4"
-            android:progress="0" />
+            android:progressDrawable="@drawable/progressbarcustomstyle1"/>
 
         <TextView
             android:id="@+id/txtLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Nivel de Ruido"
+            android:text="Nivel de Ruido: 0dB"
+            android:layout_marginTop="3dp"
             android:layout_below="@+id/progress_bar"/>
-
-        <TextView
-            android:id="@+id/txtBreakCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Avisos"
-            android:layout_below="@id/txtLevel"/>
 
 
     </RelativeLayout>
 
-
+    <RelativeLayout
+        android:id="@+id/btns"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.2">
 
     <LinearLayout
         android:id="@+id/calibrationLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:paddingTop="20dp"
-        android:layout_below="@id/lytIndicators">
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:paddingTop="5dp">
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/threshold"
             android:id="@+id/txt_calibration"
             android:gravity="center"
             android:textAlignment="center"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
             />
 
         <LinearLayout
             android:id="@+id/lytCalibrationButtons"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:layout_width="match_parent">
 
             <Button
                 android:layout_width="0dp"
@@ -117,7 +115,8 @@
         <Button
             android:id="@+id/btnEndTolerance"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
             android:text="@string/btn_end_tolerance"
             android:onClick="endCalibrateOptions" />
 
@@ -127,7 +126,7 @@
         android:id="@+id/lytButtons"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true">
 
         <TextView
@@ -136,20 +135,25 @@
             android:text="@string/alerting_status_off"
             android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_weight="0.8" />
 
         <Button
             android:id="@+id/btnStart"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_txt_start" />
+            android:text="@string/btn_txt_start"
+            android:layout_height="0dp"
+            android:layout_weight="0.8" />
 
         <Button
             android:id="@+id/btnStop"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_txt_stop"/>
+            android:text="@string/btn_txt_stop"
+            android:layout_height="0dp"
+            android:layout_weight="0.8" />
 
     </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

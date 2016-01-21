@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         decibelsTx = (TextView)findViewById(R.id.txtLevel);
         barDB = (ProgressBar)findViewById(R.id.progress_bar);
-
         upCalBtn = (Button)findViewById(R.id.btnMoreTolerance);
         downCalBtn = (Button)findViewById(R.id.btnLessTolerance);
         saveCalBtn = (Button)findViewById(R.id.btnEndTolerance);
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    decibelsTx.setText("" + msg.obj + "dB");
+                    decibelsTx.setText("Nivel de Ruido: " + msg.obj + "dB");
                     double barValue = (100*(double)msg.obj)/(120);
                     barDB.setProgress((int) barValue);
 
@@ -195,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 if (mCalib){
                     showMessage("Calibración no guardada.");
                     mEngine.stop_engine();
-                    decibelsTx.setText("0dB");
+                    decibelsTx.setText("Nivel de Ruido: 0dB");
                     findViewById(R.id.lytButtons).setVisibility(View.VISIBLE);
                 }else if (mRunning){
                     showMessage("Finalice el monitoreo para realizar la calibración");
